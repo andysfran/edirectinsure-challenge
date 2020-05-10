@@ -31,12 +31,11 @@ class Login extends Component {
             this.setState({ loading: true });
             axios.post('http://localhost:3001/api/login', { email: email, password: pass })
                 .then((res) => {
+                    this.setState({ loading: false });
                     if(res.status === 200 && res.data.success) {
-                        this.setState({ loading: false }, () => {
-                            sessionStorage.setItem('user', JSON.stringify(res.data.user));
-                            this.props.updateUser({ loggedIn: true, user: res.data.user });
-                            this.props.history.push('/');
-                        });
+                        sessionStorage.setItem('user', JSON.stringify(res.data.user));
+                        this.props.updateUser({ loggedIn: true, user: res.data.user });
+                        this.props.history.push('/');
                     } else {
                         Swal.fire(res.data.message);
                     }
