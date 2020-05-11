@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Swal from 'sweetalert2';
 import { withStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
@@ -31,9 +32,10 @@ const renderTask = ({ tasks, onCheck, onDelete, finished = false }) => {
     return taskFiltered.map((task) => {
         const labelId = `checkbox-list-label-${task._id}`;
         const completed = task.finish_date !== null;
+        const finishDate = completed ? new Date(task.finish_date).toUTCString() : null;
 
         return (
-            <ListItem key={task._id} disabled={completed} dense button onClick={() => onCheck(task._id)}>
+            <ListItem key={task._id} dense button onClick={() => finished? Swal.fire(`Completed at: ${finishDate}`) : onCheck(task._id)}>
                 <ListItemIcon>
                 <Checkbox
                     edge="start"
